@@ -5,7 +5,7 @@ import MongoRepository from '../../repository/global-mongo.repository';
 import IUser from './model/user.interface';
 import catchAsync from '../../utils/catch-async.helper';
 // import { log } from 'winston';
-import { AuthenticatedRequest } from './model/authenticated-request.interface';
+// import { AuthenticatedRequest } from './model/authenticated-request.interface';
 
 class UsersController {
   private readonly userRepository: MongoRepository<IUser>;
