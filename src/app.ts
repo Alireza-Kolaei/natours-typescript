@@ -1,23 +1,23 @@
 import * as express from 'express';
 import { Application } from 'express';
-// import RouteService from './router/router.service';
+import RouteService from './router/router.service';
 // import exceptionHandler from './middlewares/error/index';
 import bootstrap from './middlewares/boot.middleware';
 
 class App {
   public app: Application;
   public port: number;
-  //   public router: RouteService;
+  public router: RouteService;
 
   constructor(port: number) {
     this.port = port;
     this.app = express();
-    // this.router = new RouteService(this.app);
+    this.router = new RouteService(this.app);
   }
 
   public start(): void {
     bootstrap(this.app);
-    // this.router.run();
+    this.router.run();
     // exceptionHandler(this.app);
     this.app.listen(this.port, () => {
       console.log(`Listening on port ${process.env.PORT}`);
