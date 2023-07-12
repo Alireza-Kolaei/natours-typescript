@@ -13,6 +13,53 @@ class UsersController {
     this.userRepository = new MongoRepository(User);
   }
 
+  public createUser = catchAsync(async (req: Request, res: Response) => {
+    res.status(500).json({
+      status: 'error',
+      message: 'This route is not yet defined!',
+    });
+  });
+
+  public getAllUsers = catchAsync(async (req: Request, res: Response) => {
+    const users = await this.userRepository.findMany({});
+
+    res.status(200).json({
+      status: 'success',
+      results: users.length,
+      data: {
+        users,
+      },
+    });
+  });
+
+  public create = catchAsync(async (req: Request, res: Response) => {
+    res.status(500).json({
+      status: 'error',
+      message: 'This route is not yet defined!',
+    });
+  });
+
+  public getUser = catchAsync(async (req: Request, res: Response) => {
+    res.status(500).json({
+      status: 'error',
+      message: 'This route is not yet defined!',
+    });
+  });
+
+  public updateUser = catchAsync(async (req: Request, res: Response) => {
+    res.status(500).json({
+      status: 'error',
+      message: 'This route is not yet defined!',
+    });
+  });
+
+  public deleteUser = catchAsync(async (req: Request, res: Response) => {
+    res.status(500).json({
+      status: 'error',
+      message: 'This route is not yet defined!',
+    });
+  });
+
   //   public create = catchAsync(async (req: Request, res: Response) => {
   //     const newUser = await this.userRepository.create(req.body);
   //     res.send(newUser);
