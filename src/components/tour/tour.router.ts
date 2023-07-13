@@ -4,21 +4,28 @@ import { Router } from 'express';
 import TourController from './tour.controller';
 const tourController = new TourController();
 
-const userRouter = Router();
+const tourRouter = Router();
 
-// userRouter.post('/signup', authController.signup);
-// userRouter.post('/login', authController.login);
+// tourRouter
+//   .route('/top-5-cheap')
+//   .get(tourController.aliasTopTours, tourController.getAllTours);
 
-// userRouter.post('/forgotPassword', authController.forgotPassword);
-// userRouter.patch('/resetPassword/:token', authController.resetPassword);
+// tourRouter.route('/tour-stats').get(tourController.getTourStats);
+// tourRouter.route('/monthly-plan/:year').get(tourController.getMonthlyPlan);
 
-// userRouter.patch('/updateMyPassword', authController.protect, authController.updatePassword);
+// tourRouter
+//   .route('/')
+//   .get(authController.protect, tourController.getAllTours)
+//   .post(tourController.createTour);
 
-// userRouter.patch('/updateMe', authController.protect, userController.updateMe);
-// userRouter.delete('/deleteMe', authController.protect, userController.deleteMe);
+// tourRouter
+//   .route('/:id')
+//   .get(tourController.getTour)
+//   .patch(tourController.updateTour)
+//   .delete(
+//     authController.protect,
+//     authController.restrictTo('admin', 'lead-guide'),
+//     tourController.deleteTour
+//   );
 
-userRouter.route('/').get(userController.getAllUsers).post(userController.createUser);
-
-userRouter.route('/:id').get(userController.getUser).patch(userController.updateUser).delete(userController.deleteUser);
-
-export default userRouter;
+export default tourRouter;
