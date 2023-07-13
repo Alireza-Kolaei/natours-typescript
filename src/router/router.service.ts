@@ -4,6 +4,7 @@ import RouteEngine from './router-engine';
 // import docsRouter from '../components/docs/router';
 // import config from '../config/config';
 import userRouter from '../components/user/user.router';
+import authRouter from '../components/auth/auth.router';
 
 class RouteService {
   private app: Application;
@@ -17,6 +18,7 @@ class RouteService {
   public bindRouters() {
     // this.router.registerRouter('/api/v1/auth/', authRouter);
     this.router.registerRouter('/api/v1/users/', userRouter);
+    this.router.registerRouter('/api/v1/auth/', authRouter);
   }
 
   public run() {

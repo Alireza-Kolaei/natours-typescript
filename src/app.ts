@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { Application } from 'express';
 import RouteService from './router/router.service';
-// import exceptionHandler from './middlewares/error/index';
+import exceptionHandler from './middlewares/error/error.handler';
 import bootstrap from './middlewares/boot.middleware';
 
 class App {
@@ -18,11 +18,12 @@ class App {
   public start(): void {
     bootstrap(this.app);
     this.router.run();
-    // exceptionHandler(this.app);
+    exceptionHandler(this.app);
     this.app.listen(this.port, () => {
       console.log(`Listening on port ${process.env.PORT}`);
     });
   }
+
   public close(): void {
     console.log('server closed');
     process.exit(1);
