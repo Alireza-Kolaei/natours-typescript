@@ -16,6 +16,17 @@ export default class AuthController {
     return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
   };
 
+  public protect = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    let token;
+    if (req.headers.authorization && req.body.authorization.startsWith('Bearer')) {
+      token = req.headers.authorization.split(' ')[1];
+    }
+
+    if (!token) {
+      return next(new ApiError(httpStatus.UNAUTHORIZED, 'You are not logged in'));
+    }
+  });
+
   public signup = catchAsync(async (req: Request, res: Response) => {
     const newUser = await this.userRepository.create({ name: req.body.name, email: req.body.email, password: req.body.password });
     const token = this.signToken(newUser.id);
