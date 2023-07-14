@@ -91,11 +91,8 @@ userSchema.pre(/^find/, function (next) {
   next();
 });
 
-userSchema.methods.correctPassword = async function (candidatePassword: string) {
-  if (candidatePassword) {
-    return bcrypt.compare(candidatePassword, this.password);
-  }
-  return new ApiError(httpStatus.BAD_REQUEST, 'please provide your password');
+userSchema.methods.correctPassword = async function (candidatePassword: string, userPassword: string) {
+  return await bcrypt.compare(candidatePassword, userPassword);
 };
 
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp: number) {
