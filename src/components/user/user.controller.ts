@@ -12,6 +12,12 @@ class UsersController {
   constructor() {
     this.userRepository = new MongoRepository(User);
   }
+  public adminPanel = catchAsync(async (req: Request, res: Response) => {
+    res.status(200).json({
+      status: 'success',
+      message: 'Admin Panel',
+    });
+  });
 
   public createUser = catchAsync(async (req: Request, res: Response) => {
     res.status(500).json({

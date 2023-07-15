@@ -1,3 +1,4 @@
+import { promisify } from 'util';
 import { NextFunction, Request, Response } from 'express';
 import * as httpStatus from 'http-status';
 import ApiError from '../../utils/api-error.helper';
@@ -6,6 +7,8 @@ import IUser from '../user/model/user.interface';
 import MongoRepository from '../../repository/global-mongo.repository';
 import User from '../user/model/user.schema';
 import * as jwt from 'jsonwebtoken';
+import * as moment from 'moment';
+
 export default class AuthController {
   private readonly userRepository: MongoRepository<IUser>;
   constructor() {
@@ -13,18 +16,43 @@ export default class AuthController {
   }
 
   private signToken = (id: string) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+    return jwt.sign(
+      {
+        sub: id,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN }
+    );
   };
 
-  public protect = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  public protect = catchAsync(async (req: Request | any, res: Response, next: NextFunction) => {
     let token;
-    if (req.headers.authorization && req.body.authorization.startsWith('Bearer')) {
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
       token = req.headers.authorization.split(' ')[1];
     }
 
     if (!token) {
       return next(new ApiError(httpStatus.UNAUTHORIZED, 'You are not logged in'));
     }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (!decoded) {
+      throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'Token is not valid');
+    }
+
+    const currentUser = await this.userRepository.findByID(decoded.sub as string);
+
+    if (!currentUser) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'The user belonging to this token does no longer exist.');
+    }
+    //   @ts-ignore
+    if (currentUser!.changedPasswordAfter(decoded.iat)) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'User recently changed password! Please log in again.');
+    }
+
+    req.user = currentUser;
+    next();
   });
 
   public signup = catchAsync(async (req: Request, res: Response) => {
