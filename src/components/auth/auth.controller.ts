@@ -8,6 +8,8 @@ import MongoRepository from '../../repository/global-mongo.repository';
 import User from '../user/model/user.schema';
 import * as jwt from 'jsonwebtoken';
 import * as moment from 'moment';
+import { AuthenticatedRequest } from './model/authenticated-request.interface';
+import UserRoles from '../user/model/user-roles.enum';
 
 export default class AuthController {
   private readonly userRepository: MongoRepository<IUser>;
@@ -55,6 +57,15 @@ export default class AuthController {
     next();
   });
 
+  public restrictTo = (...roles: any) => {
+    return (req: Request | any, res: Response, next: NextFunction) => {
+      if (!roles.includes(req.user.role)) {
+        return next(new ApiError(httpStatus.UNAUTHORIZED, 'UNAUTHORIZED ACCESS'));
+      }
+      next();
+    };
+  };
+
   public signup = catchAsync(async (req: Request, res: Response) => {
     const newUser = await this.userRepository.create({ name: req.body.name, email: req.body.email, password: req.body.password });
     const token = this.signToken(newUser.id);
@@ -89,4 +100,15 @@ export default class AuthController {
   });
 
   public logout = catchAsync(async (req: Request, res: Response) => {});
+
+  public forgotPassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const user = await this.userRepository.findOneByParams({ email: req.body.email });
+    if (!user) {
+      return next(new ApiError(httpStatus.NOT_FOUND, 'No user found'));
+    }
+
+    const resetToken = user.createPasswordResetToken();
+    await user.save({ validateBeforeSave: false });
+  });
+  public resetPassword = catchAsync(async (req: Request, res: Response) => {});
 }

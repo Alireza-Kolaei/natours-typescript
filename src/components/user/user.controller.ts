@@ -39,9 +39,11 @@ class UsersController {
   });
 
   public create = catchAsync(async (req: Request, res: Response) => {
+    const newUser = this.userRepository.create(req.body);
+
     res.status(500).json({
       status: 'error',
-      message: 'This route is not yet defined!',
+      message: newUser,
     });
   });
 

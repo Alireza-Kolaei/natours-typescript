@@ -17,7 +17,7 @@ const userRouter = Router();
 
 // userRouter.patch('/updateMe', authController.protect, userController.updateMe);
 // userRouter.delete('/deleteMe', authController.protect, userController.deleteMe);
-userRouter.route('/admin').get(authController.protect, userController.adminPanel);
+userRouter.route('/admin').get(authController.protect, authController.restrictTo(['admin']), userController.adminPanel);
 
 userRouter.route('/').get(userController.getAllUsers).post(userController.createUser);
 
