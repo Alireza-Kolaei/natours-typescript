@@ -6,6 +6,10 @@ const envVariables = z.object({
   NODE_ENV: z.string(),
   JWT_SECRET: z.string(),
   JWT_EXPIRES_IN: z.string(),
+  EMAIL_USERNAME: z.string(),
+  EMAIL_PASSWORD: z.string(),
+  EMAIL_HOST: z.string(),
+  EMAIL_PORT: z.number(),
 });
 
 export default envVariables.parse(process.env);
