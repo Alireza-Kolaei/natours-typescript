@@ -109,6 +109,7 @@ export default class AuthController {
 
     const resetToken = user.createPasswordResetToken();
     await user.save({ validateBeforeSave: false });
+    res.send();
   });
   public resetPassword = catchAsync(async (req: Request, res: Response) => {});
 }
