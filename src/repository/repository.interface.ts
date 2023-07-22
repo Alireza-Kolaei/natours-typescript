@@ -13,6 +13,7 @@ export default interface IRepository<T> {
   create(params: Partial<T>): Promise<T>;
 
   updateOne(where: Partial<T>, updateData: Partial<T>): Promise<T | null>;
+  updateById(id: string, updateData: Partial<T>): Promise<T | null>;
   updateMany(where: Partial<T>, updateData: Partial<T>): Promise<object>;
 
   deleteOneByID(ID: string): Promise<T | null>;

@@ -66,6 +66,11 @@ export default class MongoRepository<T> implements IRepository<T> {
     return doc.exec();
   }
 
+  updateById(id: string, updateData: Partial<T>): Promise<T | null> {
+    const doc = this.model.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+    return doc.exec();
+  }
+
   updateMany(where: Partial<T>, updateData: Partial<T>): Promise<object> {
     const docs = this.model.updateMany(where, updateData);
     return docs.exec();

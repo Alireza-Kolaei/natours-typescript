@@ -104,8 +104,6 @@ export default class AuthController {
     });
   });
 
-  public logout = catchAsync(async (req: Request, res: Response) => {});
-
   public forgotPassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const user = await this.userRepository.findOneByParams({ email: req.body.email });
     if (!user) {

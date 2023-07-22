@@ -7,19 +7,12 @@ import AuthController from '../auth/auth.controller';
 const authController = new AuthController();
 const userRouter = Router();
 
-// userRouter.post('/signup', authController.signup);
-// userRouter.post('/login', authController.login);
+// userRouter.route('/admin').get(authController.protect, authController.restrictTo(['admin']), userController.adminPanel);
 
-// userRouter.post('/forgotPassword', authController.forgotPassword);
-// userRouter.patch('/resetPassword/:token', authController.resetPassword);
+// userRouter.route('/').get(userController.getAllUsers).post(userController.createUser);
+// userRouter.route('/:id').get(userController.getUser).patch(userController.updateUser).delete(userController.deleteUser);
 
-// userRouter.patch('/updateMyPassword', authController.protect, authController.updatePassword);
+userRouter.patch('/updateMe', authController.protect, userController.updateMe);
+userRouter.delete('/deleteMe', authController.protect, userController.deleteMe);
 
-// userRouter.patch('/updateMe', authController.protect, userController.updateMe);
-// userRouter.delete('/deleteMe', authController.protect, userController.deleteMe);
-userRouter.route('/admin').get(authController.protect, authController.restrictTo(['admin']), userController.adminPanel);
-
-userRouter.route('/').get(userController.getAllUsers).post(userController.createUser);
-
-userRouter.route('/:id').get(userController.getUser).patch(userController.updateUser).delete(userController.deleteUser);
 export default userRouter;
