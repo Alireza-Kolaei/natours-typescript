@@ -90,7 +90,8 @@ export default class AuthController {
     }
 
     const user = await this.userRepository.findOneByParams({ email }, '+password');
-    const correct = user?.correctPassword(password as string, user.password);
+    const correct = await user?.correctPassword(password as string, user.password);
+    console.log(correct);
 
     if (!user || !correct) {
       return next(new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password'));
@@ -132,8 +133,25 @@ export default class AuthController {
     }
   });
 
-  public resetPassword = catchAsync(async (req: Request, res: Response) => {
-    const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex')
-    const user = this.userRepository.
+  public resetPassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
+    const user = await this.userRepository.findOneByParams({
+      passwordResetToken: hashedToken,
+      passwordResetExpires: { $gt: Date.now() } as unknown as Date,
+    });
+
+    if (!user) {
+      return next(new ApiError(400, 'token is invalid or expired'));
+    }
+    user.password = req.body.password;
+    user.passwordResetExpires = undefined;
+    user.passwordResetToken = undefined;
+    await user.save();
+
+    const token = this.signToken(user._id);
+    res.status(200).json({
+      status: 'success',
+      token,
+    });
   });
 }

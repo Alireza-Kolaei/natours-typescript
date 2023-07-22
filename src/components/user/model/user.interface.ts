@@ -14,6 +14,6 @@ export default interface IUser extends Document {
   passwordResetToken?: string;
   passwordResetExpires?: Date;
   changedPasswordAfter(JWTTimestamp: number): boolean;
-  correctPassword(candidatePassword: string, userPassword: string): boolean;
+  correctPassword(candidatePassword: string, userPassword: string): Promise<boolean>;
   createPasswordResetToken(): string;
 }
