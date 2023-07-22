@@ -154,4 +154,24 @@ export default class AuthController {
       token,
     });
   });
+
+  public updatePassword = catchAsync(async (req: any, res: Response, next: NextFunction) => {
+    const user = await this.userRepository.findByID(req.user.id, '+password');
+
+    const correct = await user!.correctPassword(req.body.Currentpassword, user!.password);
+
+    if (!correct) {
+      return next(new ApiError(httpStatus.UNAUTHORIZED, 'password is not correct'));
+    }
+
+    user!.password = req.body.newPassword;
+    await user!.save();
+
+    const token = this.signToken(user!._id);
+    res.status(200).json({
+      status: 'success',
+      token,
+      message: 'Password changed',
+    });
+  });
 }
