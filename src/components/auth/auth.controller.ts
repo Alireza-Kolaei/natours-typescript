@@ -10,11 +10,15 @@ import * as jwt from 'jsonwebtoken';
 import * as moment from 'moment';
 import { AuthenticatedRequest } from './model/authenticated-request.interface';
 import UserRoles from '../user/model/user-roles.enum';
+import EmailService from '../../services/email.service';
+import * as crypto from 'crypto';
 
 export default class AuthController {
   private readonly userRepository: MongoRepository<IUser>;
+  private readonly emailService: EmailService;
   constructor() {
     this.userRepository = new MongoRepository(User);
+    this.emailService = new EmailService();
   }
 
   private signToken = (id: string) => {
@@ -109,7 +113,27 @@ export default class AuthController {
 
     const resetToken = user.createPasswordResetToken();
     await user.save({ validateBeforeSave: false });
-    res.send();
+
+    const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/resetpassword/${resetToken}`;
+
+    try {
+      await this.emailService.sendEmail(user.email, 'Password reset link', `This is your password reset link ${resetUrl}`);
+      res.send({
+        status: 'success',
+        message: 'Token sent to email',
+      });
+    } catch (error) {
+      console.log(error);
+
+      user.passwordResetToken = undefined;
+      user.passwordResetToken = undefined;
+      user.save({ validateBeforeSave: false });
+      return next(new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'error while sendig email , please try again later'));
+    }
   });
-  public resetPassword = catchAsync(async (req: Request, res: Response) => {});
+
+  public resetPassword = catchAsync(async (req: Request, res: Response) => {
+    const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex')
+    const user = this.userRepository.
+  });
 }
