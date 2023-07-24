@@ -6,6 +6,7 @@ import MongoRepository from '../../repository/global-mongo.repository';
 import IUser from './model/user.interface';
 import catchAsync from '../../utils/catch-async.helper';
 import { BAD_REQUEST } from 'http-status';
+import httpStatus = require('http-status');
 // import { log } from 'winston';
 // import { AuthenticatedRequest } from './model/authenticated-request.interface';
 
@@ -14,6 +15,7 @@ class UsersController {
   constructor() {
     this.userRepository = new MongoRepository(User);
   }
+
   private filterObj = (obj: Partial<IUser>, ...allowedFields: string[]) => {
     const newObj: Partial<IUser> = {};
     Object.keys(obj).forEach((el) => {
@@ -42,7 +44,14 @@ class UsersController {
     });
   });
 
-  public deleteMe = catchAsync(async (req: Request, res: Response, next: NextFunction) => {});
+  public deleteMe = catchAsync(async (req: any, res: Response, next: NextFunction) => {
+    await this.userRepository.updateById(req.user.id, { active: false });
+
+    res.status(204).json({
+      status: 'success',
+      data: null,
+    });
+  });
 
   public adminPanel = catchAsync(async (req: Request, res: Response) => {
     res.status(200).json({
