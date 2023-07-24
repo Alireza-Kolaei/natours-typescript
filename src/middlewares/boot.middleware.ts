@@ -1,4 +1,4 @@
-import { Application, urlencoded, json as expressJSon } from 'express';
+import { Application, urlencoded, json as expressJson } from 'express';
 import * as mongoSanitize from 'express-mongo-sanitize';
 import * as cookieParser from 'cookie-parser';
 import * as cors from 'cors';
@@ -15,11 +15,11 @@ const limiter = rateLimit({
 });
 
 export default function bootstrap(app: Application) {
-  app.use('/api', limiter);
   app.use(helmet());
+  app.use('/api', limiter);
   app.use(cors());
   app.use(urlencoded({ extended: true, limit: '10kb' }));
-  app.use(expressJSon());
+  app.use(expressJson({ limit: '10kb' }));
   app.use(cookieParser());
   app.use(mongoSanitize());
   app.use(xss());

@@ -1,4 +1,4 @@
-import { BooleanExpression, Document } from 'mongoose';
+import { Document } from 'mongoose';
 import TourDifficulty from './tour-difficulty.enum';
 
 export default interface ITour extends Document {
@@ -19,4 +19,6 @@ export default interface ITour extends Document {
   createdAt: Date;
   startDates?: Date[];
   secretTour: boolean;
+  startLocation: { type: String; coordinates: number[]; address: string; description: string };
+  locations: { type: String; coordinates: number[]; address: string; description: string; day: number }[];
 }

@@ -1,8 +1,9 @@
 import { Schema, model } from 'mongoose';
 import httpStatus = require('http-status');
-import UserRoles from './tour-difficulty.enum';
 import * as slugify from 'slugify';
 import ITour from './tour.interface';
+import TourDifficulty from './tour-difficulty.enum';
+import { kStringMaxLength } from 'buffer';
 
 const tourSchema: Schema = new Schema<ITour>(
   {
@@ -27,10 +28,7 @@ const tourSchema: Schema = new Schema<ITour>(
     difficulty: {
       type: String,
       required: [true, 'A tour must have a difficulty'],
-      enum: {
-        values: ['easy', 'medium', 'difficult'],
-        message: 'Difficulty is either: easy, medium, difficult',
-      },
+      enum: TourDifficulty,
     },
     ratingsAverage: {
       type: Number,
@@ -73,6 +71,26 @@ const tourSchema: Schema = new Schema<ITour>(
       type: Boolean,
       default: false,
     },
+    startLocation: {
+      type: {
+        type: String,
+        default: 'Point',
+        enum: ['Point'],
+      },
+      coordinates: [Number],
+      address: String,
+      description: String,
+    },
+    locations: [
+      {
+        type: { type: String, default: 'Point', enum: ['point'] },
+
+        coordinates: [Number],
+        address: String,
+        description: String,
+        day: Number,
+      },
+    ],
   },
   { timestamps: true, toJSON: { virtuals: true } }
 );
