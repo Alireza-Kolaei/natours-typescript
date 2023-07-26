@@ -15,14 +15,10 @@ const tourRouter = Router();
 
 tourRouter.route('/').get(authController.protect, tourController.getAllTours).post(tourController.createTour);
 
-// tourRouter
-//   .route('/:id')
-//   .get(tourController.getTour)
-//   .patch(tourController.updateTour)
-//   .delete(
-//     authController.protect,
-//     authController.restrictTo('admin', 'lead-guide'),
-//     tourController.deleteTour
-//   );
+tourRouter
+  .route('/:id')
+  .get(tourController.getTour)
+  .patch(tourController.updateTour)
+  .delete(authController.protect, authController.restrictTo('admin', 'lead-guide'), tourController.deleteTour);
 
 export default tourRouter;

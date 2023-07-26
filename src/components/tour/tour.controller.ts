@@ -6,6 +6,7 @@ import catchAsync from '../../utils/catch-async.helper';
 import ITour from './model/tour.interface';
 import IUser from '../user/model/user.interface';
 import User from '../user/model/user.schema';
+import ApiError from '../../utils/api-error.helper';
 // import { log } from 'winston';
 // import { AuthenticatedRequest } from './model/authenticated-request.interface';
 
@@ -16,12 +17,27 @@ class UsersController {
     this.tourRepository = new MongoRepository(Tour);
     this.userRepository = new MongoRepository(User);
   }
+
   public getAllTours = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     res.status(200).json({
       status: 'success',
       message: 'not implementer',
     });
   });
+  public getTour = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const tour = await this.tourRepository.findByID(req.params.id, undefined, ['guides']);
+    if (!tour) {
+      return next(new ApiError(404, 'no tour found with that id!'));
+    }
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour,
+      },
+    });
+  });
+  public updateTour = catchAsync(async (req: Request, res: Response, next: NextFunction) => {});
+  public deleteTour = catchAsync(async (req: Request, res: Response, next: NextFunction) => {});
 
   public createTour = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     console.log(req.body);

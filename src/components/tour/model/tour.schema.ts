@@ -4,7 +4,7 @@ import * as slugify from 'slugify';
 import ITour from './tour.interface';
 import TourDifficulty from './tour-difficulty.enum';
 import { kStringMaxLength } from 'buffer';
-import User from '../../../components/user/model/user.schema';
+// import User from '../../../components/user/model/user.schema';
 
 const tourSchema: Schema = new Schema<ITour>(
   {
@@ -92,7 +92,7 @@ const tourSchema: Schema = new Schema<ITour>(
         day: Number,
       },
     ],
-    guides: Array,
+    guides: [{ type: Schema.ObjectId, ref: 'User' }],
   },
   { timestamps: true, toJSON: { virtuals: true } }
 );
@@ -101,11 +101,11 @@ tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
 
-tourSchema.pre('save', async function (next) {
-  const guidesPromises = this.guides.map(async (id: string) => await User.findById(id));
-  this.guides = await Promise.all(guidesPromises);
-  next();
-});
+// tourSchema.pre('save', async function (next) {
+//   const guidesPromises = this.guides.map(async (id: string) => await User.findById(id));
+//   this.guides = await Promise.all(guidesPromises);
+//   next();
+// });
 
 tourSchema.pre('save', function (next) {
   this.slug = slugify.default(this.name, { lower: true });

@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Document , Schema } from 'mongoose';
 import TourDifficulty from './tour-difficulty.enum';
 
 export default interface ITour extends Document {
@@ -21,5 +21,5 @@ export default interface ITour extends Document {
   secretTour: boolean;
   startLocation: { type: String; coordinates: number[]; address: string; description: string };
   locations: { type: String; coordinates: number[]; address: string; description: string; day: number }[];
-  guides: Array<string>;
+  guides: Array<Schema.Types.ObjectId>;
 }
