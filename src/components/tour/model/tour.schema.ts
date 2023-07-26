@@ -94,7 +94,7 @@ const tourSchema: Schema = new Schema<ITour>(
     ],
     guides: [{ type: Schema.ObjectId, ref: 'User' }],
   },
-  { timestamps: true, toJSON: { virtuals: true } }
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
 tourSchema.virtual('durationWeeks').get(function () {

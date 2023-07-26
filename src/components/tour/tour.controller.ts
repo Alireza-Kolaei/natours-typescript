@@ -19,11 +19,15 @@ class UsersController {
   }
 
   public getAllTours = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const allTours = await this.tourRepository.findMany({});
     res.status(200).json({
       status: 'success',
-      message: 'not implementer',
+      data: {
+        allTours,
+      },
     });
   });
+
   public getTour = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const tour = await this.tourRepository.findByID(req.params.id, undefined, ['guides']);
     if (!tour) {

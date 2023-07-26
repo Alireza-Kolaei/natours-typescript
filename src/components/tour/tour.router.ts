@@ -13,7 +13,7 @@ const tourRouter = Router();
 // tourRouter.route('/tour-stats').get(tourController.getTourStats);
 // tourRouter.route('/monthly-plan/:year').get(tourController.getMonthlyPlan);
 
-tourRouter.route('/').get(authController.protect, tourController.getAllTours).post(tourController.createTour);
+tourRouter.route('/').get(tourController.getAllTours).post(tourController.createTour);
 
 tourRouter
   .route('/:id')
