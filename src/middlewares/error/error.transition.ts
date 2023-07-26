@@ -54,6 +54,8 @@ const errorHandler = (err: any, req: Request, res: Response, next: NextFunction)
   if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, req, res);
   } else if (process.env.NODE_ENV === 'production') {
+    console.log('helllllppppppppppppppppp');
+
     let error = { ...err };
 
     if (err instanceof mongooseError.CastError) error = handleCastErrorDB(err);

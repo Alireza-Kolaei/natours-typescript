@@ -3,6 +3,7 @@ import RouteEngine from './router-engine';
 import userRouter from '../components/user/user.router';
 import authRouter from '../components/auth/auth.router';
 import tourRouter from '../components/tour/tour.router';
+import reviewRouter from '../components/review/review.router';
 
 class RouteService {
   private app: Application;
@@ -17,6 +18,7 @@ class RouteService {
     this.router.registerRouter('/api/v1/tours/', tourRouter);
     this.router.registerRouter('/api/v1/users/', userRouter);
     this.router.registerRouter('/api/v1/auth/', authRouter);
+    this.router.registerRouter('/api/v1/review/', reviewRouter);
   }
 
   public run() {

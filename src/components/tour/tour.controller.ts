@@ -44,7 +44,6 @@ class UsersController {
   public deleteTour = catchAsync(async (req: Request, res: Response, next: NextFunction) => {});
 
   public createTour = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.body);
     const guide = await this.userRepository.findByID(req.body.guides[0]);
     console.log(guide);
 
