@@ -21,4 +21,5 @@ export default interface ITour extends Document {
   secretTour: boolean;
   startLocation: { type: String; coordinates: number[]; address: string; description: string };
   locations: { type: String; coordinates: number[]; address: string; description: string; day: number }[];
+  guides: Array<string>;
 }

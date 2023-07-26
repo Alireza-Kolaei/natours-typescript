@@ -1,8 +1,8 @@
 import { Router } from 'express';
-// import AuthMiddleware from '../../middlewares/auth.middleware';
-// const authMiddleware = new AuthMiddleware();
 import TourController from './tour.controller';
 const tourController = new TourController();
+import AuthController from '../auth/auth.controller';
+const authController = new AuthController();
 
 const tourRouter = Router();
 
@@ -13,10 +13,7 @@ const tourRouter = Router();
 // tourRouter.route('/tour-stats').get(tourController.getTourStats);
 // tourRouter.route('/monthly-plan/:year').get(tourController.getMonthlyPlan);
 
-// tourRouter
-//   .route('/')
-//   .get(authController.protect, tourController.getAllTours)
-//   .post(tourController.createTour);
+tourRouter.route('/').get(authController.protect, tourController.getAllTours).post(tourController.createTour);
 
 // tourRouter
 //   .route('/:id')
