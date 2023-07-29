@@ -23,4 +23,13 @@ const reviewSchema: Schema = new Schema<IReview>(
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+reviewSchema.pre(/^find/, function (next) {
+  // @ts-ignore
+  this.populate({
+    path: 'user',
+    select: 'name photo',
+  });
+  next();
+});
+
 export default model<IReview>('Review', reviewSchema);

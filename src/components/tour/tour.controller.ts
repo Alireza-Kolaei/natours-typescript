@@ -29,7 +29,7 @@ class UsersController {
   });
 
   public getTour = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const tour = await this.tourRepository.findByID(req.params.id, undefined, ['guides']);
+    const tour = await this.tourRepository.findByID(req.params.id, undefined, ['guides', 'reviews']);
     if (!tour) {
       return next(new ApiError(404, 'no tour found with that id!'));
     }

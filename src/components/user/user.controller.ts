@@ -7,6 +7,7 @@ import IUser from './model/user.interface';
 import catchAsync from '../../utils/catch-async.helper';
 import { BAD_REQUEST } from 'http-status';
 import httpStatus = require('http-status');
+import * as fs from 'fs';
 // import { log } from 'winston';
 // import { AuthenticatedRequest } from './model/authenticated-request.interface';
 

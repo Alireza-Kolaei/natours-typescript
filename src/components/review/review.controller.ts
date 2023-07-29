@@ -25,6 +25,7 @@ class ReviewController {
 
   public addReview = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const newReview = await this.reviewRepository.create(req.body);
+
     res.send({});
   });
 }
