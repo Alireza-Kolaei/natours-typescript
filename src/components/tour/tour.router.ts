@@ -3,6 +3,7 @@ import TourController from './tour.controller';
 const tourController = new TourController();
 import AuthController from '../auth/auth.controller';
 const authController = new AuthController();
+import reviewRouter from '../review/review.router';
 
 const tourRouter = Router();
 
@@ -12,6 +13,10 @@ const tourRouter = Router();
 
 // tourRouter.route('/tour-stats').get(tourController.getTourStats);
 // tourRouter.route('/monthly-plan/:year').get(tourController.getMonthlyPlan);
+
+// tourRouter.route('/:tourId/reviews').post(authController.protect, authController.restrictTo('user'), reviewController.createReview);
+
+tourRouter.use('/:tourId/review', reviewRouter);
 
 tourRouter.route('/').get(tourController.getAllTours).post(tourController.createTour);
 
