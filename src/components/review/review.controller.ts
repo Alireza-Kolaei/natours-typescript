@@ -20,7 +20,18 @@ class ReviewController {
     this.userRepository = new MongoRepository(userSchema);
     this.reviewRepository = new MongoRepository(reviewShema);
   }
-  public getAllReviews = catchAsync(async (req: Request, res: Response, next: NextFunction) => {});
+  public getAllReviews = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    let filter = {};
+    if (req.params.tourId) filter = { tour: req.params.tourId };
+    const reviews = await this.reviewRepository.findMany(filter);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        reviews,
+      },
+    });
+  });
 
   public createReview = catchAsync(async (req: any, res: Response, next: NextFunction) => {
     if (!req.body.tour) req.body.tour = req.params.tourId;

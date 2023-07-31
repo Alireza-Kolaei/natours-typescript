@@ -23,6 +23,14 @@ const reviewSchema: Schema = new Schema<IReview>(
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+reviewSchema.set('toJSON', {
+  transform: function (doc, ret, opt) {
+    ret.id = ret._id;
+    delete ret['__v'];
+    delete ret['_id'];
+    return ret;
+  },
+});
 reviewSchema.pre(/^find/, function (next) {
   // @ts-ignore
   this.populate({

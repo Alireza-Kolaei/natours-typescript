@@ -9,6 +9,6 @@ const reviewRouter = Router({ mergeParams: true });
 
 reviewRouter
   .route('/')
-  .get(reviewController.getAllReviews)
+  .get(authController.protect, authController.restrictTo('user'), reviewController.getAllReviews)
   .post(authController.protect, authController.restrictTo('user'), reviewController.createReview);
 export default reviewRouter;
